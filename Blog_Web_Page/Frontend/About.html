@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Blog Web Page</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #121212;
+            color: white;
+            text-align: center;
+            padding: 0;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 0;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar a {
+            color: #FFD700;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 20px;
+            padding: 10px 15px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .navbar a:hover {
+            color: #000;
+            background: #FFD700;
+            border-radius: 5px;
+            padding: 10px 15px;
+        }
+
+        /* Container */
+    .container {
+             max-width: 80%;  /* Adjust width to take more space */
+             margin: 100px auto;  /* Center the container */
+             padding: 40px;
+             background: rgba(255, 255, 255, 0.1);
+             border-radius: 15px;
+             box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+             backdrop-filter: blur(15px);
+             transition: transform 0.3s ease-in-out;
+    }
+
+
+        .container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+        }
+
+        h2 {
+            color: #FFD700;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-top: 10px;
+            color: #ddd;
+        }
+
+        strong {
+            color: #FFD700;
+        }
+
+        /* Step Guide */
+        .steps {
+            text-align: left;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            transition: 0.3s;
+        }
+
+        .steps:hover {
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .steps div {
+            margin: 10px 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .highlight {
+            font-size: 20px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            padding: 15px;
+            font-size: 16px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <a href="index.html">Home</a>
+    <a href="About.html">About</a>
+    <a href="User/contact.html">Contact</a>
+</nav>
+
+<!-- About Content -->
+<div class="container">
+    <h2>Hi Everyone,</h2>
+    <p>Welcome to our blogging website! A space where we share insights, knowledge, and experiences to help each
+        other.</p>
+
+    <h3>My Journey into Programming</h3>
+    <p>
+        When I was in my first semester, I came across a word that was completely new to me—<strong>Programming</strong>.
+        It felt like an totally unknown for me . The first programming language I encountered was <strong>C</strong>,
+        and
+        honestly,
+        everything the faculty explained just bounced over my head. I was afraid of this subject, but thanks to YouTube
+        tutorials,
+        that help me to pass my semester exams.
+    </p>
+
+    <p>
+        Even after moving to my second semester, I still struggled with understanding <strong>C programming</strong>.
+        Then, I was
+        introduced to another language—<strong>Python</strong>. At first, its concepts didn’t make sense, and I felt
+        lost again.
+    </p>
+
+    <p>
+        But this time, I did something different. I shared my struggles with my <strong>Bhaiya</strong>, who guided me
+        and showed me
+        the right way to learn. Following his advice, I started gaining confidence, and now, I no longer fear
+        programming.
+    </p>
+
+    <p>
+        I know I’m not alone in this journey. Every student who hears the words <strong>coding/programming</strong>
+        for the first time feels overwhelmed. That’s why I created this platform—to share my experiences, help
+        others overcome their fears, and make programming easier for beginners.
+    </p>
+
+    <h3> How to Learn Effectively?</h3>
+    <div class="steps">
+        <div class="highlight">1️. Focus on the Basics</div>
+        <div>Understand the fundamental concepts and logic before jumping into coding.</div>
+
+        <div class="highlight">2. Search and Solve Questions</div>
+        <div>After learning a topic, search coding question relevant to your topic and solve it.</div>
+
+        <div class="highlight">3. Write Pseudo-Code</div>
+        <div>Before coding, write down the logic in simple steps and try dry-run it.</div>
+
+
+        <div class="highlight">4. Practice Without Looking at Solutions</div>
+        <div>Challenge yourself—solve problems before looking at the answers.</div>
+
+        <div class="highlight">5️. Never Give Up!</div>
+    </div>
+
+    <p><strong>Remember: Every expert was once a beginner. Keep learning, keep growing! </strong></p>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    © 2025 Blog Web Page | Designed for Passionate Learners
+</div>
+</body>
+</html>

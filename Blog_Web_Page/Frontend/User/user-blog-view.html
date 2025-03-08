@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1E1E2E, #2D3E50);
+            text-align: center;
+            padding: 40px 20px;
+            margin: 0;
+            color: #fff;
+        }
+
+        h2 {
+            color: #ffcc00;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #blog-content {
+            color: #ddd;
+            font-size: 20px;
+            line-height: 1.8;
+            text-align: justify;
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        /* Update Button */
+        .update-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 12px 20px;
+            font-size: 18px;
+            color: white;
+            background: #ff6600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .update-btn:hover {
+            background: #cc5200;
+        }
+
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 28px;
+            }
+            #blog-content {
+                font-size: 18px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h2 id="blog-title">Loading...</h2>
+<p id="blog-content">Fetching content, please wait...</p>
+
+<script>
+    async function fetchBlogPost() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const postTitle = urlParams.get("title");
+
+    if (!postTitle) {
+        document.getElementById("blog-title").innerText = "Post Not Found";
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://127.0.0.1:5005/get-blog-post?title=${postTitle}`);
+        const postArray = await response.json();
+
+        console.log("API Response:", postArray);
+
+        if (Array.isArray(postArray) && postArray.length > 0) {
+            const post = postArray[0];
+            console.log("First Post Object:", post);
+
+            let postId = post.post_id || post._id;
+            let title = post.BLOG_TITLE || post.title || "Untitled"; // Handle different key cases
+            let content = post["blog-post"] || post.content || "No content available";
+
+            if (!postId) {
+                console.error("Error: Post ID is missing!");
+                alert("Error: Post ID is missing!");
+                return;
+            }
+
+            document.getElementById("blog-title").innerText = title;
+            document.getElementById("blog-content").innerText = content;
+
+        } else {
+            document.getElementById("blog-title").innerText = "Post Not Found";
+        }
+    } catch (error) {
+        console.error("Error fetching post:", error);
+        document.getElementById("blog-title").innerText = "Error Loading Post";
+    }
+}
+fetchBlogPost();
+
+</script>
+</body>
+</html>

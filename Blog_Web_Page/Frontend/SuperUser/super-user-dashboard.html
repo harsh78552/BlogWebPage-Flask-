@@ -1,0 +1,351 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Admin Dashboard</title>-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">-->
+<!--    <style>-->
+<!--        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');-->
+<!--        body {-->
+<!--            font-family: 'Poppins', sans-serif;-->
+<!--            background: linear-gradient(135deg, #e3eaf7, #ffffff);-->
+<!--            text-align: center;-->
+<!--            padding: 40px;-->
+<!--        }-->
+<!--        .container {-->
+<!--            background: rgba(255, 255, 255, 0.95);-->
+<!--            padding: 40px;-->
+<!--            border-radius: 15px;-->
+<!--            box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.2);-->
+<!--            width: 50%;-->
+<!--            margin: auto;-->
+<!--            backdrop-filter: blur(15px);-->
+<!--        }-->
+<!--        h2 {-->
+<!--            color: #333;-->
+<!--            font-weight: 600;-->
+<!--            font-size: 28px;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+<!--        button {-->
+<!--            padding: 12px 20px;-->
+<!--            margin: 10px;-->
+<!--            font-size: 16px;-->
+<!--            font-weight: bold;-->
+<!--            cursor: pointer;-->
+<!--            border: none;-->
+<!--            border-radius: 8px;-->
+<!--            transition: all 0.3s ease-in-out;-->
+<!--            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+<!--        .add-blog-post { background: #ffcc00; color: #333; }-->
+<!--        .see-post { background: #28a745; color: white; }-->
+<!--        .delete-post { background: #dc3545; color: white; }-->
+<!--        button:hover {-->
+<!--            opacity: 0.85;-->
+<!--            transform: scale(1.05);-->
+<!--            box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.2);-->
+<!--        }-->
+<!--        #category-dropdown {-->
+<!--            display: none;-->
+<!--            margin-top: 15px;-->
+<!--            padding: 12px;-->
+<!--            border-radius: 8px;-->
+<!--            border: 2px solid #007bff;-->
+<!--            font-size: 16px;-->
+<!--            font-weight: bold;-->
+<!--            color: #007bff;-->
+<!--            background: white;-->
+<!--            cursor: pointer;-->
+<!--            transition: all 0.3s ease-in-out;-->
+<!--        }-->
+<!--        #post-list {-->
+<!--            margin-top: 20px;-->
+<!--            text-align: center;-->
+<!--            display: none;-->
+<!--        }-->
+<!--        .post-card {-->
+<!--            background: white;-->
+<!--            padding: 15px;-->
+<!--            margin: 15px auto;-->
+<!--            border-radius: 10px;-->
+<!--            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);-->
+<!--            display: inline-block;-->
+<!--            width: 260px;-->
+<!--            transition: all 0.3s ease-in-out;-->
+<!--        }-->
+<!--        .post-card:hover {-->
+<!--            transform: translateY(-5px);-->
+<!--            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);-->
+<!--        }-->
+<!--        .see-post {-->
+<!--            background: #007bff;-->
+<!--            color: white;-->
+<!--            font-size: 16px;-->
+<!--            padding: 10px;-->
+<!--            border-radius: 8px;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <h2>Admin Dashboard</h2>-->
+<!--    <button class="add-blog-post" onclick="goToAddPost()">Add Blog</button>-->
+<!--    <button class="see-post" onclick="showCategories()">See Posts</button>-->
+<!--    <button class="delete-post">Delete Post</button>-->
+<!--    <select id="category-dropdown" onchange="fetchPosts()">-->
+<!--        <option value="">Select Category</option>-->
+<!--    </select>-->
+<!--    <div id="post-list"></div>-->
+<!--</div>-->
+<!--<script>-->
+<!--    document.addEventListener("DOMContentLoaded", async function () {-->
+<!--        try {-->
+<!--            const response = await fetch("http://127.0.0.1:5005/check-auth", {-->
+<!--                method: "GET",-->
+<!--                credentials: "include",-->
+<!--            });-->
+<!--            if (!response.ok) {-->
+<!--                console.log("User not authenticated, redirecting...");-->
+<!--                window.location.href = "super-user-login.html";-->
+<!--            }-->
+<!--        } catch (error) {-->
+<!--            console.error("Error checking authentication:", error);-->
+<!--            window.location.href = "super-user-login.html";-->
+<!--        }-->
+<!--    });-->
+<!--    function goToAddPost() {-->
+<!--        window.location.href = "blog-post.html";-->
+<!--    }-->
+<!--    async function showCategories() {-->
+<!--        const dropdown = document.getElementById("category-dropdown");-->
+<!--        dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";-->
+<!--        try {-->
+<!--            const response = await fetch("http://127.0.0.1:5005/extract-category");-->
+<!--            const categories = await response.json();-->
+<!--            dropdown.innerHTML = '<option value="">Select Category</option>';-->
+<!--            categories.forEach(catObj => {-->
+<!--                let option = document.createElement("option");-->
+<!--                option.value = catObj.category;-->
+<!--                option.textContent = catObj.category;-->
+<!--                dropdown.appendChild(option);-->
+<!--            });-->
+<!--        } catch (error) {-->
+<!--            console.error("Error fetching categories:", error);-->
+<!--        }-->
+<!--    }-->
+<!--    async function fetchPosts() {-->
+<!--        const category = document.getElementById("category-dropdown").value;-->
+<!--        if (!category) return;-->
+<!--        try {-->
+<!--            const response = await fetch("http://127.0.0.1:5005/extract-category");-->
+<!--            const categories = await response.json();-->
+<!--            let selectedCategory = categories.find(catObj => catObj.category === category);-->
+<!--            let postListDiv = document.getElementById("post-list");-->
+<!--            postListDiv.style.display = "block";-->
+<!--            postListDiv.innerHTML = `<h3>Posts Under: ${category}</h3>`;-->
+<!--            if (selectedCategory && selectedCategory.post.length > 0) {-->
+<!--                selectedCategory.post.forEach(postTitle => {-->
+<!--                    let postItem = document.createElement("div");-->
+<!--                    postItem.className = "post-card";-->
+<!--                    postItem.innerHTML = `-->
+<!--                        <p><strong>${postTitle}</strong></p>-->
+<!--                        <button class="see-post" onclick="viewPost('${postTitle}')">View</button>-->
+<!--                    `;-->
+<!--                    postListDiv.appendChild(postItem);-->
+<!--                });-->
+<!--            } else {-->
+<!--                postListDiv.innerHTML += `<p>No posts available in this category.</p>`;-->
+<!--            }-->
+<!--        } catch (error) {-->
+<!--            console.error("Error fetching posts:", error);-->
+<!--        }-->
+<!--    }-->
+<!--    function viewPost(postTitle) {-->
+<!--        window.location.href = `blog-view.html?title=${encodeURIComponent(postTitle)}`;-->
+<!--    }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e3eaf7, #ffffff);
+            text-align: center;
+            padding: 40px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0px 6px 25px rgba(0, 0, 0, 0.2);
+            width: 50%;
+            margin: auto;
+            backdrop-filter: blur(15px);
+        }
+        h2 {
+            color: #333;
+            font-weight: 600;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 12px 20px;
+            margin: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .add-blog-post { background: #ffcc00; color: #333; }
+        .see-post { background: #28a745; color: white; }
+        .delete-post { background: #dc3545; color: white; }
+        button:hover {
+            opacity: 0.85;
+            transform: scale(1.05);
+            box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        #category-dropdown {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #007bff;
+            font-size: 16px;
+            font-weight: bold;
+            color: #007bff;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        #post-list {
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        .post-card {
+            background: white;
+            padding: 15px;
+            margin: 15px auto;
+            border-radius: 10px;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            width: 260px;
+            transition: all 0.3s ease-in-out;
+        }
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .see-post {
+            background: #007bff;
+            color: white;
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Admin Dashboard</h2>
+    <button class="add-blog-post" onclick="goToAddPost()">Add Blog</button>
+    <button class="see-post" onclick="showCategories()">See Posts</button>
+    <button class="delete-post" onclick="goToDeletePost()">Delete Post</button>
+    <select id="category-dropdown" onchange="fetchPosts()">
+        <option value="">Select Category</option>
+    </select>
+    <div id="post-list"></div>
+</div>
+
+<script>
+    // 🔐 Check Authentication Before Allowing Access
+    document.addEventListener("DOMContentLoaded", async function () {
+        try {
+            const response = await fetch("http://127.0.0.1:5005/check-auth", {
+                method: "GET",
+                credentials: "include",
+            });
+            if (!response.ok) {
+                console.log("User not authenticated, redirecting...");
+                window.location.href = "super-user-login.html";
+            }
+        } catch (error) {
+            console.error("Error checking authentication:", error);
+            window.location.href = "super-user-login.html";
+        }
+    });
+
+    function goToAddPost() {
+        window.location.href = "blog-post.html";
+    }
+
+    function goToDeletePost() {
+        window.location.href = "super-user-delete-post.html";  // 🔥 Redirect to Delete Page
+    }
+
+    async function showCategories() {
+        const dropdown = document.getElementById("category-dropdown");
+        dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+        try {
+            const response = await fetch("http://127.0.0.1:5005/extract-category");
+            const categories = await response.json();
+            dropdown.innerHTML = '<option value="">Select Category</option>';
+            categories.forEach(catObj => {
+                let option = document.createElement("option");
+                option.value = catObj.category;
+                option.textContent = catObj.category;
+                dropdown.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Error fetching categories:", error);
+        }
+    }
+
+    async function fetchPosts() {
+        const category = document.getElementById("category-dropdown").value;
+        if (!category) return;
+        try {
+            const response = await fetch("http://127.0.0.1:5005/extract-category");
+            const categories = await response.json();
+            let selectedCategory = categories.find(catObj => catObj.category === category);
+            let postListDiv = document.getElementById("post-list");
+            postListDiv.style.display = "block";
+            postListDiv.innerHTML = `<h3>Posts Under: ${category}</h3>`;
+            if (selectedCategory && selectedCategory.post.length > 0) {
+                selectedCategory.post.forEach(postTitle => {
+                    let postItem = document.createElement("div");
+                    postItem.className = "post-card";
+                    postItem.innerHTML = `
+                        <p><strong>${postTitle}</strong></p>
+                        <button class="see-post" onclick="viewPost('${postTitle}')">View</button>
+                    `;
+                    postListDiv.appendChild(postItem);
+                });
+            } else {
+                postListDiv.innerHTML += `<p>No posts available in this category.</p>`;
+            }
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+        }
+    }
+
+    function viewPost(postTitle) {
+        window.location.href = `blog-view.html?title=${encodeURIComponent(postTitle)}`;
+    }
+</script>
+</body>
+</html>

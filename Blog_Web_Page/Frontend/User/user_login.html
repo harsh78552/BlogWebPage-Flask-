@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+            transition: 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: scale(1.05);
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #218838;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            background-color: #218838;
+            border: none;
+            color: white;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #1e7e34;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Login</h2>
+
+    <!-- Login form -->
+    <form id="login-form">
+        <input type="text" id="user_name" placeholder="Enter your name" required>
+        <input type="email" id="user_mail" placeholder="Enter your mail" required>
+        <input type="password" id="user_password" placeholder="Enter your password" required>
+        <button class="btn" type="submit">Login</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById("login-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form from reloading the page
+
+        const user_name = document.getElementById("user_name").value.trim();
+        const user_mail = document.getElementById("user_mail").value.trim();
+        const user_password = document.getElementById("user_password").value.trim();
+
+        if (!user_name || !user_mail || !user_password) {
+            alert("Please fill in all fields!");
+            return;
+        }
+
+        loginUser(user_name, user_mail, user_password);
+    });
+
+    async function loginUser(user_name, user_mail, user_password) {
+        try {
+            const response = await fetch("http://127.0.0.1:5005/user-login", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ user_name, user_mail: user_mail, user_password }),
+            });
+
+            const data = await response.json();
+            console.log("Login response:", data);
+
+            if (response.ok) {
+                localStorage.setItem("loggedIn", "true");
+                localStorage.setItem("user_name", user_name);
+                alert("Login successful!");
+                window.location.href = "MainUser.html";
+            } else {
+                alert("Login failed: " + (data.message || "Unknown error"));
+            }
+        } catch (error) {
+            console.error("Error during login:", error);
+            alert("Network error, check console for details.");
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Blog Post</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            margin: auto;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 12px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Add New Blog Post</h2>
+    <form id="post-form">
+        <input type="text" id="title" placeholder="Enter post title" required>
+        <textarea id="content" rows="5" placeholder="Enter post content" required></textarea>
+        <input type="text" id="category" placeholder="Enter category" required>
+        <input type="text" id="tags" placeholder="Enter tags (comma-separated)" required>
+        <input type="file" id="image_file" accept="image/*">
+        <button type="submit">Publish Post</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById("post-form").addEventListener("submit", async function(event) {
+        event.preventDefault();
+        const title = document.getElementById("title").value;
+        const content = document.getElementById("content").value;
+        const category = document.getElementById("category").value;
+        const tags = document.getElementById("tags").value;
+        const image_file = document.getElementById("image_file").files[0];
+
+
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("content", content);
+        formData.append("category", category);
+        formData.append("tags", tags);
+        if (image_file) {
+            formData.append("image_file", image_file);
+        }
+        const response = await fetch("http://127.0.0.1:5005/admin-upload-post", {
+            method: "POST",
+            credentials: "include",
+            body: formData
+        });
+        if (response.ok) {
+            alert ("Post added successfully!");
+            window.location.href = "super-user-dashboard.html";
+        } else {
+            alert("Error adding post");
+        }
+    });
+</script>
+</body>
+</html>

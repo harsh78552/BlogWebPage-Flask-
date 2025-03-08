@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Blog - Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+<!--            background: url('https://source.unsplash.com/1600x900/?technology,code') no-repeat center center/cover;-->
+            color: #fff;
+            text-align: center;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background: rgba(0, 0, 0, 0.7);
+            width: 100%;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        .logo {
+            color: #FFD700;
+            font-size: 28px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: 0.3s ease-in-out;
+        }
+
+        .logo:hover {
+            color: #fff;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 25px;
+        }
+
+        .nav-links a {
+            color: #FFD700;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 5px 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        /* Dropdown Menu */
+        .user-menu {
+            position: relative;
+        }
+
+        .user-btn {
+            background: #FFD700;
+            color: black;
+            padding: 8px 14px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .user-btn:hover {
+            background: #ffdb4d;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 8px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            width: 160px;
+            padding: 8px;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .user-dropdown a {
+            color: #FFD700;
+            text-decoration: none;
+            padding: 10px;
+            text-align: center;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .user-dropdown a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .user-menu:hover .user-dropdown {
+            display: flex;
+        }
+
+        /* Hero Section */
+        .hero {
+            width: 50%;
+            text-align: center;
+            margin: 140px auto 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: black;
+            font-weight: bold;
+        }
+
+        .hero ul {
+            text-align: left;
+            font-size: 18px;
+            line-height: 1.8;
+            color: black;
+            padding-left: 30px;
+            margin-top: 15px;
+        }
+
+        /* Footer Styling */
+        footer {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 0;
+            color: #FFD700;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                width: 85%;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+    <div class="navbar-container">
+        <a href="#" class="logo">My Blog</a>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="User/contact.html">Contact</a></li>
+            <li class="user-menu">
+                <button class="user-btn">Blog</button>
+                <div class="user-dropdown">
+                    <a href="User/blog.html">Category</a>
+                </div>
+            </li>
+            <li class="user-menu">
+                <button class="user-btn">Admin</button>
+                <div class="user-dropdown">
+                    <a href="SuperUser/super-user-login.html">Login</a>
+                    <a href="SuperUser/super-user-logout.html">Logout</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<div class="hero">
+    <h1>Welcome to My Blog</h1>
+    <p>Exploring the world of programming, especially Python. Covering topics from basics to frameworks like Flask &
+        Django.</p>
+    <ul>
+        <li>Intro, Variables, Data Types</li>
+        <li>Conditional Statements</li>
+        <li>Loops</li>
+        <li>Functions</li>
+        <li>Lists, Tuples, Sets</li>
+        <li>Dictionaries</li>
+        <li>File Handling</li>
+        <li>OOPs-Concepts</li>
+        <li>Frameworks (Flask, Django)</li>
+    </ul>
+</div>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2025 My Blog. All Rights Reserved.</p>
+    <a href="https://github.com/harsh78552" target="_blank">GitHub</a> |
+    <a href="mailto:harsh844509@gmail.com">Gmail</a> |
+    <a href="https://www.linkedin.com/in/harsh-tiwari-10164b283" target="_blank">LinkedIn</a>
+</footer>
+</body>
+</html>

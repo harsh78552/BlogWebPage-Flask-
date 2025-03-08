@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super User Logout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 50px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        h2 {
+            color: #333;
+        }
+        .logout-btn {
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .logout-btn:hover {
+            background-color: darkred;
+        }
+        #message {
+            margin-top: 20px;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Are you sure you want to log out?</h2>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+    <p id="message"></p>
+</div>
+<script>
+    function logout() {
+        let token = localStorage.getItem("token");
+        let messageElement = document.getElementById("message");
+
+        // Check if user is logged in
+        if (!token) {
+              window.alert("User not logged in...");
+              window.location.href = "../index.html";
+              return;
+        }
+
+        if (confirm("Do you really want to log out?")) {
+            fetch("http://127.0.0.1:5005/super-user-logout", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                messageElement.textContent = data.message;
+                localStorage.removeItem("token"); // Remove token from storage
+                setTimeout(() => {
+                    window.location.href = "../index.html"; // Redirect after showing message
+                }, 2000); // Redirect after 2 seconds
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                messageElement.textContent = "Error logging out. Please try again.";
+            });
+        }
+    }
+</script>
+</body>
+</html>

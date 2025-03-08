@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Post</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #141e30, #243b55);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 8px;
+            background: #d9534f;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #c9302c;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Delete Post</h2>
+    <form id="deleteForm">
+        <input type="text" id="post_id" placeholder="Enter Post ID" required>
+        <button type="submit">Delete</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById("deleteForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const post_id = document.getElementById("post_id").value;
+
+    try {
+        const response = await fetch("http://127.0.0.1:5005/delete-post", {
+            method: "DELETE",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ post_id: post_id })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert(result.message);
+            window.location.href = "super-user-dashboard.html";
+        } else {
+            alert(`Error: ${result.message}`);
+        }
+    } catch (error) {
+        console.error("Error deleting post:", error);
+        alert("Error deleting post. Please try again.");
+    }
+});
+</script>
+</body>
+</html>

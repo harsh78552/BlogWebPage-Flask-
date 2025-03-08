@@ -1,0 +1,350 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Admin Dashboard</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            background: black;-->
+<!--            color: white;-->
+<!--            text-align: center;-->
+<!--            padding: 20px;-->
+<!--        }-->
+
+<!--        .container {-->
+<!--            background: #222;-->
+<!--            padding: 30px;-->
+<!--            border-radius: 15px;-->
+<!--            box-shadow: 0px 4px 30px rgba(255, 255, 255, 0.2);-->
+<!--            width: 400px;-->
+<!--            margin: auto;-->
+<!--        }-->
+
+<!--        h2 {-->
+<!--            color: #4CAF50;-->
+<!--        }-->
+
+<!--        button {-->
+<!--            width: 100%;-->
+<!--            padding: 15px;-->
+<!--            margin: 10px 0;-->
+<!--            background-color: #4CAF50;-->
+<!--            border: none;-->
+<!--            color: white;-->
+<!--            font-size: 18px;-->
+<!--            border-radius: 8px;-->
+<!--            cursor: pointer;-->
+<!--            transition: 0.3s;-->
+<!--        }-->
+
+<!--        button:hover {-->
+<!--            background-color: #45a049;-->
+<!--        }-->
+
+<!--        .hidden {-->
+<!--            display: none;-->
+<!--        }-->
+
+<!--        textarea, input {-->
+<!--            width: 100%;-->
+<!--            padding: 10px;-->
+<!--            margin: 5px 0;-->
+<!--            border-radius: 8px;-->
+<!--            border: 1px solid #ccc;-->
+<!--            font-size: 16px;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="container">-->
+<!--    <h2>Admin Dashboard</h2>-->
+
+<!--    <button onclick="window.location.href='blog.html'">See Posts</button>-->
+<!--    <button onclick="showUpdateForm()">Update Post</button>-->
+<!--    <button onclick="deletePost()">Delete Post</button>-->
+
+<!--    &lt;!&ndash; Update Form &ndash;&gt;-->
+<!--    <div id="update-form" class="hidden">-->
+<!--        <h3>Update Post</h3>-->
+<!--        <input type="text" id="update-title" placeholder="Title">-->
+<!--        <textarea id="update-content" placeholder="Content"></textarea>-->
+<!--        <input type="text" id="update-tags" placeholder="Tags (comma-separated)">-->
+<!--        <button onclick="updatePost()">Save Changes</button>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Display Posts &ndash;&gt;-->
+<!--    <div id="posts-container" class="hidden">-->
+<!--        <h3>All Posts</h3>-->
+<!--        <div id="posts"></div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    // Fetch all posts-->
+<!--    async function seePosts() {-->
+<!--        try {-->
+<!--            const response = await fetch("http://127.0.0.1:5005/get-blog-post");-->
+<!--            const data = await response.json();-->
+
+<!--            console.log("Fetched posts:", data);-->
+
+<!--            if (!Array.isArray(data)) {-->
+<!--                throw new Error("Invalid response format");-->
+<!--            }-->
+
+<!--            const postsContainer = document.getElementById("posts");-->
+<!--            postsContainer.innerHTML = ""; // Clear previous content-->
+
+<!--            data.forEach(post => {-->
+<!--                const tagsText = Array.isArray(post.tags) ? post.tags.join(", ") : "No Tags";-->
+<!--                const imageUrl = post.image_url || "default-image.jpg"; // Handle missing image-->
+
+<!--                const postElement = document.createElement("div");-->
+<!--                postElement.innerHTML = `-->
+<!--                    <h3>${post.title}</h3>-->
+<!--                    <p>${post.content}</p>-->
+<!--                    <p><strong>Category:</strong> ${post.category || "No Category"}</p>-->
+<!--                    <p><strong>Tags:</strong> ${tagsText}</p>-->
+<!--                    <img src="${imageUrl}" alt="Post Image" width="200">-->
+<!--                    <hr>-->
+<!--                `;-->
+<!--                postsContainer.appendChild(postElement);-->
+<!--            });-->
+
+<!--            document.getElementById("posts-container").classList.remove("hidden");-->
+
+<!--        } catch (error) {-->
+<!--            console.error("Error fetching posts:", error);-->
+<!--            alert("Failed to load posts.");-->
+<!--        }-->
+<!--    }-->
+
+<!--    // Show Update Post Form-->
+<!--    async function showUpdateForm() {-->
+<!--        document.getElementById("update-form").classList.remove("hidden");-->
+
+<!--        const response = await fetch("http://127.0.0.1:5005/get-blog-post");-->
+<!--        const data = await response.json();-->
+
+<!--        if (response.ok && Array.isArray(data) && data.length > 0) {-->
+<!--            document.getElementById("update-title").value = data[0].title || "";-->
+<!--            document.getElementById("update-content").value = data[0].content || "";-->
+<!--            document.getElementById("update-tags").value = Array.isArray(data[0].tags) ? data[0].tags.join(", ") : "";-->
+<!--        } else {-->
+<!--            alert("Failed to fetch post.");-->
+<!--        }-->
+<!--    }-->
+
+<!--    // Update Post-->
+<!--    async function updatePost() {-->
+<!--        const title = document.getElementById("update-title").value;-->
+<!--        const content = document.getElementById("update-content").value;-->
+<!--        const tagsInput = document.getElementById("update-tags").value;-->
+<!--        const tagsArray = tagsInput.split(",").map(tag => tag.trim()); // Correct handling-->
+
+<!--        const response = await fetch("http://127.0.0.1:5005/update-post", {-->
+<!--            method: "PUT",-->
+<!--            credentials: "include",-->
+<!--            headers: {-->
+<!--                "Content-Type": "application/json",-->
+<!--            },-->
+<!--            body: JSON.stringify({ title, content, tags: tagsArray }),-->
+<!--        });-->
+
+<!--        const data = await response.json();-->
+
+<!--        if (response.ok) {-->
+<!--            alert("Post updated successfully!");-->
+<!--        } else {-->
+<!--            alert("Update failed: " + data.message);-->
+<!--        }-->
+<!--    }-->
+
+<!--    // Delete a post-->
+<!--    async function deletePost() {-->
+<!--        const postId = prompt("Enter the Post ID to delete:");-->
+
+<!--        if (!postId) return;-->
+
+<!--        const response = await fetch(`http://127.0.0.1:5005/delete-post/${postId}`, {-->
+<!--            method: "DELETE",-->
+<!--            credentials: "include"-->
+<!--        });-->
+
+<!--        const data = await response.json();-->
+
+<!--        if (response.ok) {-->
+<!--            alert("Post deleted successfully!");-->
+<!--        } else {-->
+<!--            alert("Failed to delete post: " + data.message);-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: black;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #222;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 30px rgba(255, 255, 255, 0.2);
+            width: 400px;
+            margin: auto;
+        }
+
+        h2 {
+            color: #4CAF50;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Admin Dashboard</h2>
+    <button onclick="seePosts()">See Posts</button>
+    <button onclick="showUpdateForm()">Update Post</button>
+    <button onclick="deletePost()">Delete Post</button>
+
+    <!-- Update Form -->
+    <div id="update-form" class="hidden">
+        <h3>Update Post</h3>
+        <input type="text" id="update-id" placeholder="Post ID" readonly>
+        <input type="text" id="update-title" placeholder="Title">
+        <textarea id="update-content" placeholder="Content"></textarea>
+        <input type="text" id="update-tags" placeholder="Tags (comma-separated)">
+        <button onclick="updatePost()">Save Changes</button>
+    </div>
+
+    <!-- Display Posts -->
+    <div id="posts-container" class="hidden">
+        <h3>All Posts</h3>
+        <div id="posts"></div>
+    </div>
+</div>
+
+<script>
+    async function seePosts() {
+        try {
+            const response = await fetch("http://127.0.0.1:5005/get-blog-post");
+            const data = await response.json();
+
+            if (!Array.isArray(data)) throw new Error("Invalid response format");
+
+            const postsContainer = document.getElementById("posts");
+            postsContainer.innerHTML = "";
+
+            data.forEach(post => {
+                const tagsText = Array.isArray(post.tags) ? post.tags.join(", ") : "No Tags";
+                const imageUrl = post.image_url || "default-image.jpg";
+
+                const postElement = document.createElement("div");
+                postElement.innerHTML = `
+                    <h3>${post.title}</h3>
+                    <p>${post.content}</p>
+                    <p><strong>Category:</strong> ${post.category || "No Category"}</p>
+                    <p><strong>Tags:</strong> ${tagsText}</p>
+                    <p><strong>Post ID:</strong> ${post._id}</p>
+                    <img src="${imageUrl}" alt="Post Image" width="200">
+                    <button onclick="prefillUpdateForm('${post._id}', '${post.title}', '${post.content}', '${tagsText}')">Edit</button>
+                    <hr>
+                `;
+                postsContainer.appendChild(postElement);
+            });
+
+            document.getElementById("posts-container").classList.remove("hidden");
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+            alert("Failed to load posts.");
+        }
+    }
+
+    function prefillUpdateForm(postId, title, content, tags) {
+        document.getElementById("update-form").classList.remove("hidden");
+        document.getElementById("update-id").value = postId;
+        document.getElementById("update-title").value = title;
+        document.getElementById("update-content").value = content;
+        document.getElementById("update-tags").value = tags;
+    }
+
+    async function updatePost() {
+        const postId = document.getElementById("update-id").value;
+        const title = document.getElementById("update-title").value;
+        const content = document.getElementById("update-content").value;
+        const tagsInput = document.getElementById("update-tags").value;
+        const tagsArray = tagsInput.split(",").map(tag => tag.trim());
+
+        const response = await fetch(`http://127.0.0.1:5005/update-post/${postId}`, {
+            method: "PUT",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title, content, tags: tagsArray })
+        });
+
+        const data = await response.json();
+        alert(response.ok ? "Post updated successfully!" : "Update failed: " + data.message);
+    }
+
+    async function deletePost() {
+        const postId = prompt("Enter the Post ID to delete:");
+        if (!postId) return;
+
+        const response = await fetch(`http://127.0.0.1:5005/delete-post/${postId}`, {
+            method: "DELETE",
+            credentials: "include"
+        });
+
+        const data = await response.json();
+        alert(response.ok ? "Post deleted successfully!" : "Failed to delete post: " + data.message);
+    }
+</script>
+
+</body>
+</html>
